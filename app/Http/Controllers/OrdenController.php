@@ -54,6 +54,6 @@ class OrdenController extends Controller
         $tienda = Tienda::where('id', $product->tienda_id)->first();
         $pdf = PDF::loadView('pdf.pdf',compact('cliente','newOrden','product','detalle','tienda'));
         
-        return $pdf->download('Comprobante.pdf');
+        return $pdf->stream('Comprobante.pdf');
     }
 }
