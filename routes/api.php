@@ -22,7 +22,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
+Route::post('loign',[ClienteController::class,'login']);
 Route::apiResource('Cliente', ClienteController::class);
 Route::get('pdf/{id}',[OrdenController::class,'pdf']);
 Route::get('Producto',[ProductoController::class,'index']);
