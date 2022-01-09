@@ -62,23 +62,16 @@ class OrdenController extends Controller
         return response()->json($respuesta, 200);
     }
 
-    public function pdf( $id ){
-        $user = User::all()->max('id');
-        $newOrden = new Orden();
-        $newOrden->esCarrito = false;
-        $newOrden->fechapedido = Carbon::now()->format('Y-m-d');
-        $newOrden->estado = "1";  //en Proceso
-        $newOrden->users_id = $user;
-        $newOrden->save();
+    public function pdf(){
+
+        $Orden = Orden::all()->max('id');
+        $newOrden = Orden::findOrFail($Orden);
+        $cliente = User::where('id',$newOrden->users_id)->first();
         $orden = $newOrden->id;
-        $product = Producto::where('id', $id)->first();
-        $detalle = new DetalleOrden();
-        $detalle->orden_id = $orden;
-        $detalle->producto_id = $id;
-        $detalle->subtotal = $product->precio;
-        $detalle->cantidad = 1;
-        $detalle->save();
-        $cliente = User::where('id', $user)->first();
+        $detalle = DetalleOrden::where('orden_id',$orden)->first();
+
+        $product = Producto::where('id', $detalle->producto_id)->first();
+        
         $tienda = Tienda::where('id', $product->tienda_id)->first();
         $pdf = PDF::loadView('pdf.pdf',compact('cliente','newOrden','product','detalle','tienda'));
         

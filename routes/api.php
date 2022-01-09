@@ -25,7 +25,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('loign',[ClienteController::class,'login']);
 Route::post('Orden/{usuario}/{id}',[OrdenController::class,'venta']);
 Route::apiResource('Cliente', ClienteController::class);
-Route::get('pdf/{id}',[OrdenController::class,'pdf']);
+Route::get('pdf',[OrdenController::class,'pdf']);
 Route::get('Producto',[ProductoController::class,'index']);
 Route::get('Orden/{id}',[OrdenController::class,'index']);
 Route::get('Orden/{id}/Detalle',[OrdenController::class,'detalle']);
