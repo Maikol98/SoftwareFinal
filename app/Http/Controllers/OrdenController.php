@@ -34,8 +34,8 @@ class OrdenController extends Controller
         //
     }
 
-    public function venta( $usuario, $id, Request $request){
-        $cantidad = $request->cantidad;
+    public function venta( $usuario, $id, $cant){
+        $cantidad = $cant;
         $product = Producto::findOrFail($id);
         $respuesta = 0;
         if ($product->stock >= $cantidad) {
