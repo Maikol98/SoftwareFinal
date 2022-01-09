@@ -34,6 +34,34 @@ class OrdenController extends Controller
         //
     }
 
+    public function venta( $usuario, $id ){
+        
+        $product = Producto::findOrFail($id);
+        $respuesta = 0;
+        if ($product->stock > 0) {
+            $newOrden = new Orden();
+            $newOrden->esCarrito = false;
+            $newOrden->fechapedido = Carbon::now()->format('Y-m-d');
+            $newOrden->estado = "1";  //en Proceso
+            $newOrden->users_id = $usuario;
+            $newOrden->save();
+    
+            $orden = $newOrden->id;
+    
+            $detalle = new DetalleOrden();
+            $detalle->orden_id = $orden;
+            $detalle->producto_id = $id;
+            $detalle->subtotal = $product->precio;
+            $detalle->cantidad = 1;
+            $detalle->save();
+    
+            $product->stock = $product->stock - 1;
+            $product->update();
+            $respuesta = 1;
+        }
+        return response()->json($respuesta, 200);
+    }
+
     public function pdf( $id ){
         $user = User::all()->max('id');
         $newOrden = new Orden();
