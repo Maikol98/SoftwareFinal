@@ -34,11 +34,11 @@ class OrdenController extends Controller
         //
     }
 
-    public function venta( $usuario, $id ){
-        
+    public function venta( $usuario, $id, Request $request){
+        $cantidad = $request->cantidad;
         $product = Producto::findOrFail($id);
         $respuesta = 0;
-        if ($product->stock > 0) {
+        if ($product->stock >= $cantidad) {
             $newOrden = new Orden();
             $newOrden->esCarrito = false;
             $newOrden->fechapedido = Carbon::now()->format('Y-m-d');
@@ -51,11 +51,11 @@ class OrdenController extends Controller
             $detalle = new DetalleOrden();
             $detalle->orden_id = $orden;
             $detalle->producto_id = $id;
-            $detalle->subtotal = $product->precio;
-            $detalle->cantidad = 1;
+            $detalle->subtotal = $product->precio * $cantidad;
+            $detalle->cantidad = $cantidad;
             $detalle->save();
     
-            $product->stock = $product->stock - 1;
+            $product->stock = $product->stock - $cantidad;
             $product->update();
             $respuesta = 1;
         }
