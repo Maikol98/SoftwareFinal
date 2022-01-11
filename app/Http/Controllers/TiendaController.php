@@ -10,7 +10,7 @@ class TiendaController extends Controller
     
     public function index()
     {
-        $tiendas = Tiendas::All();
+        $tiendas = Tienda::All();
         return response()->json($tiendas, 200, $headers);
     }
     
