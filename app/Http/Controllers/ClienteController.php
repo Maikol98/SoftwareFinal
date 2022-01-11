@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\mensaje;
 
 class ClienteController extends Controller
 {
@@ -79,5 +81,19 @@ class ClienteController extends Controller
             }
             return json_encode(0);
         }
+    }
+
+    public function mensaje(){
+        $mensaje = request()->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'telefono' => 'required',
+            'empresa' => 'required',
+            'content' => 'required'
+        ]);
+
+            Mail::to('maikols10@gmail.com')->send( new mensaje($mensaje));
+
+        return view('recibido');
     }
 }

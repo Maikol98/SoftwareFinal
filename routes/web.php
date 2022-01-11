@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ClienteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,5 +15,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view('home');
+})->name('home');
+
+
+Route::get('/QuienesSomos', function () {
+    return view('quienesSomos');
+})->name('QuienesSomos');
+
+Route::get('/Contactanos', function () {
+    return view('Contactanos');
+})->name('contactanos');
+
+Route::post('/Contactanos', [ClienteController::class,'mensaje'])->name('Contactanos.store');
